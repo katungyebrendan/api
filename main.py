@@ -7,7 +7,6 @@ from sklearn.cluster import KMeans
 import logging
 import numpy as np
 
-
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -39,9 +38,19 @@ try:
     logger.info("KMeans model loaded successfully.")
 
     # Load PyTorch model correctly
-    model_path = os.path.join("models", "student_model.py")
+    model_path = os.path.join("models", "student_model.py")  # Ensure correct file extension
+    model_data = torch.load(model_path, map_location=torch.device('cpu'))
     model = StudentModel()  # Initialize model first
-    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    
+    # Determine if model_data is a state_dict or the full model instance.
+    if isinstance(model_data, dict):
+        model.load_state_dict(model_data)
+    elif isinstance(model_data, StudentModel):
+        model = model_data
+    else:
+        # Raise an error if the loaded data is not in an expected format.
+        raise ValueError(f"Unexpected model format: {model_data}")
+    
     model.eval()  # Put model in evaluation mode
     logger.info("Student model loaded successfully.")
 
@@ -95,5 +104,5 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 10000))  
+    port = int(os.getenv("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)

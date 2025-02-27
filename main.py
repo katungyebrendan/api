@@ -38,7 +38,7 @@ try:
     logger.info("KMeans model loaded successfully.")
 
     # Load PyTorch model correctly
-    model_path = os.path.join("models", "student_model.py")  # Ensure correct file extension
+    model_path = os.path.join("models", "student_model.pth")  # Ensure correct file extension
     model_data = torch.load(model_path, map_location=torch.device('cpu'))
     model = StudentModel()  # Initialize model first
     

@@ -63,6 +63,5 @@ for epoch in range(100):
     if epoch % 10 == 0:
         print(f"Epoch {epoch}: Loss = {loss:.4f}")
 
-
-torch.save(model.state_dict(), "student_model.pth")
+torch.save(model, "student_model.pth")  
 print("✅ Model saved as student_model.pth")

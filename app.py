@@ -24,7 +24,7 @@ class StudentGNN(torch.nn.Module):
 # Load Model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 student_model = StudentGNN(5, 32, 2)  # Adjust input size
-student_model.load_state_dict(torch.load("student_model.pth", map_location=device))
+student_model.load_state_dict(torch.load("student_model.pth", map_location=device, weights_only=False))
 student_model.eval()
 
 @app.post("/predict/")
